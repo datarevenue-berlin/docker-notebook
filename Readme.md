@@ -23,7 +23,9 @@ A great feature that is finally available in Jupyter too 🌈
 Additional information [here](https://github.com/krassowski/jupyterlab-go-to-definition)
 
 ### Working dask dashboard
-Dask dashboard can be opened inside Lab as separate tab or window.
+Dask dashboard can be opened inside Lab as separate tab or window. To use the
+dashboard inside Lab you need to port-forward to the correct k8s service, then
+put the url you would use to access this dashboard into the entry field.
 
 ### Draw.io included
 You can make nice draw.io diagrams inside jupyter!
