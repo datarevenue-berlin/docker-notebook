@@ -14,9 +14,11 @@ RUN conda install --yes --freeze-installed \
     python-blosc \
     cytoolz \
     dask==2.0.0 \
+    distributed=2.1.0 \
+    bokeh=1.2.0 \
     nomkl \
-    numpy==1.16.2 \
-    pandas==0.24.2 \
+    numpy=1.16.2 \
+    pandas=0.24.2 \
     ipywidgets \
     dask-labextension==1.0.0 \
     python-graphviz \
@@ -41,7 +43,10 @@ RUN conda install --yes --freeze-installed \
     && rm -rf /opt/conda/pkgs
 
 RUN jupyter serverextension enable --py jupyterlab_code_formatter
-RUN git clone https://github.com/datarevenue-berlin/sparsity.git && pip install -e sparsity/
+RUN git clone https://github.com/datarevenue-berlin/sparsity.git && \
+    cd sparsity && \
+    git checkout v0.21.0-rc1 && \
+    pip install -e .
 
 USER root
 RUN fix-permissions /home/jovyan/.jupyter/

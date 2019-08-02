@@ -29,3 +29,4 @@ put the url you would use to access this dashboard into the entry field.
 
 ### Draw.io included
 You can make nice draw.io diagrams inside jupyter!
+
