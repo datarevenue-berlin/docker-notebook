@@ -1,0 +1,22 @@
+{
+  "language": "python",
+  "display_name": "Python",
+  "metadata": {
+    "process_proxy": {
+      "class_name": "enterprise_gateway.services.processproxies.k8s.KubernetesProcessProxy",
+      "config": {
+        "image_name": "drtools/notebook:base-kernel"
+      }
+    }
+  },
+  "env": {
+  },
+  "argv": [
+    "python",
+    "/usr/local/share/jupyter/kernels/standard/scripts/launch_kubernetes.py",
+    "--RemoteProcessProxy.kernel-id",
+    "{kernel_id}",
+    "--RemoteProcessProxy.response-address",
+    "{response_address}"
+  ]
+}

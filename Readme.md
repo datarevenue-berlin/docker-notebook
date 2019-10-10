@@ -1,32 +1,35 @@
-# Data Revenue Jupyter Lab Build
+# Data Revenue Notebooks
 
-This image builds a docker image with a customized Jupyter Lab development
-environment. Ready to use with Dask's Helm chart.
+This repository includes helm charts and resources to build docker images for a Jupyter deployment that automatically spawns a remote kernel in a new kubernetes pod.
 
-## Features
+Remote kernels runs in a separated pod and namespace. This allows notebook usage to scale to many employees and notebooks using a kubernetes cluster. This is achieved using Enterprise Gateway.
 
-### Themes
-Good looking dark theme 😉
+Notebook instances are manged for each user separately using Jupyter Hub allowing fully customizable notebook environments. See `notebook-container` for more information on the rich default configuration.
 
-### Automatic code formatting
-Clean notebooks made easy 🤩
-- Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd><kbd>F</kbd> to black format your cell
-- Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd><kbd>O</kbd> to optimize your imports
+## Structure
+```
+.
+├── gateway                         Helm configuration for Enterprise Gateway chart
+├── hub                             Helm configuration for Jupyter Hub
+├── kernel-containers               All kernel containers are built in here
+│   └── standard                    Build instructions for standard kernel
+├── kernelspecs                     Kernelspec data container
+│   └── kernels                     Contains all standard kernels
+├── kubernetes                      Additional kubernetes resources
+├── nfs                             ReadWriteMany volumes to mirror working dirs
+└── notebook-container              Notebook deployment
+```
 
-### Sparsity included
-Sparsity is cloned and installed in editable mode for quick changes 👾
+## Deployment instruction
 
-### Jump to source/definition
-A great feature that is finally available in Jupyter too 🌈
-<kbd>Alt</kbd> + <kbd>click</kbd> or <kbd>cmd</kbd> + <kbd>click</kbd> to jump to definition of a function or variable
+1. Make sure you are connected to your k8s cluster and have helm installed
+2. Execute `bootstrap.sh` this will build all images, push them and start the k8s resources
 
-Additional information [here](https://github.com/krassowski/jupyterlab-go-to-definition)
-
-### Working dask dashboard
-Dask dashboard can be opened inside Lab as separate tab or window. To use the
-dashboard inside Lab you need to port-forward to the correct k8s service, then
-put the url you would use to access this dashboard into the entry field.
-
-### Draw.io included
-You can make nice draw.io diagrams inside jupyter!
-
+## Add custom kernels
+1. Duplicate the standard kernel directory in `kernelspecs/kernels/standard`
+2. Edit the `kernelspec.json` to suite your needs
+3. *Advanced:* Edit startup script and pod template if necessary
+4. Make sure the required dockeri mage either is manged by a different respository or add it to `kernel-containers` (preferred)
+5. Copy `kernelspecs/kernels/NEWKERNEL` to your enterprise gateway pod 
+    `kubectl cp kernelspecs/kernels/NEWKERNEL PODNAME:/usr/local/share/jupyter/kernels/`
+6. Build new image in `bootstrap.sh`
